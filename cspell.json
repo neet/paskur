@@ -5,6 +5,9 @@
   "dictionaries": [],
   "words": [
     "actix",
+    "cloudsdktool",
+    "gcloud",
+    "kaniko",
     "reqwest"
   ],
   "ignoreWords": [],

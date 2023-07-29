@@ -1,19 +1,11 @@
-# https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
 steps:
   - id: build
-    name: docker
+    name: gcr.io/kaniko-project/executor:latest
     args:
-      - build
-      - "--no-cache"
-      - "-t"
-      - $_IMAGE_NAME
-      - .
-
-  - id: push
-    name: docker
-    args:
-      - push
-      - $_IMAGE_NAME
+      - --context=dir://.
+      - --destination=$_IMAGE_NAME
+      - --no-push=false
+      - --cache=true
 
   - id: deploy
     name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
@@ -27,7 +19,6 @@ steps:
       - "--image=$_IMAGE_NAME"
       - "--region=$_DEPLOY_REGION"
       - "--quiet"
-      - "--allow-unauthenticated"
 
 images:
   - $_IMAGE_NAME
