@@ -19,6 +19,3 @@ steps:
       - "--image=$_IMAGE_NAME"
       - "--region=$_DEPLOY_REGION"
       - "--quiet"
-
-images:
-  - $_IMAGE_NAME
