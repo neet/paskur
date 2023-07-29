@@ -1,9 +1,13 @@
 FROM rust:1.66 as builder
 WORKDIR /app
 
-COPY . .
+# Just copy the manifests and build dependencies
+COPY Cargo.toml Cargo.lock ./
 RUN cargo install --path .
 RUN cargo build
+
+# Now copy the rest of the application
+COPY . .
 
 # production stage
 FROM debian:bullseye-slim
