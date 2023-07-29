@@ -8,6 +8,7 @@
     "cloudsdktool",
     "gcloud",
     "kaniko",
+    "KHTML",
     "reqwest"
   ],
   "ignoreWords": [],

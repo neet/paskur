@@ -1,16 +1,14 @@
 use scraper::{Element, Html, Selector};
 use url::{form_urlencoded::Serializer, Url};
 
+const USER_AGENT: &str = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
+
 pub async fn search(title: &str) -> Result<String, reqwest::Error> {
-    let base_url = "https://search.yahoo.co.jp/search";
+    let base_url = "https://google.com/search";
     let url = Url::parse(base_url).unwrap();
 
-    let params = [
-        ("p", &title),
-        ("vs", &"www.y-history.net/appendix"),
-        ("fr", &"ysin"),
-        ("ei", &"utf-8"),
-    ];
+    let query = title.to_string() + &" site:y-history.net".to_string();
+    let params = [("q", &query)];
 
     let search = &Serializer::new(String::new())
         .extend_pairs(&params)
@@ -22,7 +20,7 @@ pub async fn search(title: &str) -> Result<String, reqwest::Error> {
 
     let resp = reqwest::Client::new()
         .get(search_url)
-        .header("User-Agent", "Chrome/114.0.0.0")
+        .header("User-Agent", USER_AGENT)
         .send()
         .await?;
 
@@ -34,7 +32,7 @@ pub async fn search(title: &str) -> Result<String, reqwest::Error> {
     let element = document
         .select(&selector)
         .next()
-        .expect("Failed to find the element");
+        .expect("Failed to find the first h3 element");
 
     let parent_element = element
         .parent_element()
